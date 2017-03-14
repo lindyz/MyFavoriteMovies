@@ -29,5 +29,7 @@ namespace MyFavoriteMovies.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<MyFavoriteMovies.Models.Movie> Movies { get; set; }
     }
 }

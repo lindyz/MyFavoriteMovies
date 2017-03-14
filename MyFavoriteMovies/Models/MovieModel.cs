@@ -15,8 +15,8 @@ namespace MyFavoriteMovies.Models
         public decimal Price { get; set; }
     }
 
-    public class ApplicationDBcontext : ApplicationDbContext
+    public class ApplicationDBcontext : DbContext
     {
-        public new DbSet<Movie> Movies { get; set; }
+        public DbSet<Movie> Movies { get; set; }
     }
 }

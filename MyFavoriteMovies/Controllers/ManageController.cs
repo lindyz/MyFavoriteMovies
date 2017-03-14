@@ -9,7 +9,7 @@ using Microsoft.Owin.Security;
 using MyFavoriteMovies.Models;
 
 namespace MyFavoriteMovies.Controllers
-{
+{ 
     [Authorize]
     public class ManageController : Controller
     {
@@ -32,9 +32,9 @@ namespace MyFavoriteMovies.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -50,8 +50,8 @@ namespace MyFavoriteMovies.Controllers
             }
         }
 
-        //
-        // GET: /Manage/Index
+        // 
+        // GET: /Manage/Index 
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -75,8 +75,8 @@ namespace MyFavoriteMovies.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Manage/RemoveLogin
+        // 
+        // POST: /Manage/RemoveLogin 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
@@ -99,15 +99,15 @@ namespace MyFavoriteMovies.Controllers
             return RedirectToAction("ManageLogins", new { Message = message });
         }
 
-        //
-        // GET: /Manage/AddPhoneNumber
+        // 
+        // GET: /Manage/AddPhoneNumber 
         public ActionResult AddPhoneNumber()
         {
             return View();
         }
 
-        //
-        // POST: /Manage/AddPhoneNumber
+        // 
+        // POST: /Manage/AddPhoneNumber 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
@@ -116,7 +116,7 @@ namespace MyFavoriteMovies.Controllers
             {
                 return View(model);
             }
-            // Generate the token and send it
+            // Generate the token and send it 
             var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), model.Number);
             if (UserManager.SmsService != null)
             {
@@ -130,8 +130,8 @@ namespace MyFavoriteMovies.Controllers
             return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
         }
 
-        //
-        // POST: /Manage/EnableTwoFactorAuthentication
+        // 
+        // POST: /Manage/EnableTwoFactorAuthentication 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EnableTwoFactorAuthentication()
@@ -145,8 +145,8 @@ namespace MyFavoriteMovies.Controllers
             return RedirectToAction("Index", "Manage");
         }
 
-        //
-        // POST: /Manage/DisableTwoFactorAuthentication
+        // 
+        // POST: /Manage/DisableTwoFactorAuthentication 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DisableTwoFactorAuthentication()
@@ -160,17 +160,17 @@ namespace MyFavoriteMovies.Controllers
             return RedirectToAction("Index", "Manage");
         }
 
-        //
-        // GET: /Manage/VerifyPhoneNumber
+        // 
+        // GET: /Manage/VerifyPhoneNumber 
         public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
         {
             var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), phoneNumber);
-            // Send an SMS through the SMS provider to verify the phone number
+            // Send an SMS through the SMS provider to verify the phone number 
             return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
         }
 
-        //
-        // POST: /Manage/VerifyPhoneNumber
+        // 
+        // POST: /Manage/VerifyPhoneNumber 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
@@ -189,15 +189,13 @@ namespace MyFavoriteMovies.Controllers
                 }
                 return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
             }
-            // If we got this far, something failed, redisplay form
+            // If we got this far, something failed, redisplay form 
             ModelState.AddModelError("", "Failed to verify phone");
             return View(model);
         }
 
-        //
-        // POST: /Manage/RemovePhoneNumber
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        // 
+        // GET: /Manage/RemovePhoneNumber 
         public async Task<ActionResult> RemovePhoneNumber()
         {
             var result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
@@ -213,15 +211,15 @@ namespace MyFavoriteMovies.Controllers
             return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
         }
 
-        //
-        // GET: /Manage/ChangePassword
+        // 
+        // GET: /Manage/ChangePassword 
         public ActionResult ChangePassword()
         {
             return View();
         }
 
-        //
-        // POST: /Manage/ChangePassword
+        // 
+        // POST: /Manage/ChangePassword 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
@@ -244,15 +242,15 @@ namespace MyFavoriteMovies.Controllers
             return View(model);
         }
 
-        //
-        // GET: /Manage/SetPassword
+        // 
+        // GET: /Manage/SetPassword 
         public ActionResult SetPassword()
         {
             return View();
         }
 
-        //
-        // POST: /Manage/SetPassword
+        // 
+        // POST: /Manage/SetPassword 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
@@ -272,12 +270,12 @@ namespace MyFavoriteMovies.Controllers
                 AddErrors(result);
             }
 
-            // If we got this far, something failed, redisplay form
+            // If we got this far, something failed, redisplay form 
             return View(model);
         }
 
-        //
-        // GET: /Manage/ManageLogins
+        // 
+        // GET: /Manage/ManageLogins 
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -299,18 +297,18 @@ namespace MyFavoriteMovies.Controllers
             });
         }
 
-        //
-        // POST: /Manage/LinkLogin
+        // 
+        // POST: /Manage/LinkLogin 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LinkLogin(string provider)
         {
-            // Request a redirect to the external login provider to link a login for the current user
+            // Request a redirect to the external login provider to link a login for the current user 
             return new AccountController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
         }
 
-        //
-        // GET: /Manage/LinkLoginCallback
+        // 
+        // GET: /Manage/LinkLoginCallback 
         public async Task<ActionResult> LinkLoginCallback()
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
@@ -333,8 +331,8 @@ namespace MyFavoriteMovies.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
-        // Used for XSRF protection when adding external logins
+        #region Helpers 
+        // Used for XSRF protection when adding external logins 
         private const string XsrfKey = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager
@@ -384,6 +382,6 @@ namespace MyFavoriteMovies.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }
